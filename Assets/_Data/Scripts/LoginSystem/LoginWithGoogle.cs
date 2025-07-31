@@ -12,7 +12,7 @@ using UnityEngine.Networking;
 public class LoginWithGoogle : MonoBehaviour
 {
     [Header("Google API")]
-    private string GoogleAPI = "489625237981-4f8uv588otos8nnca0qi6ef52pqr07h2.apps.googleusercontent.com";
+    private string GoogleAPI = "489625237981-qp60074mpr4icnqolhofj45r4epto2c4.apps.googleusercontent.com";
     private GoogleSignInConfiguration configuration;
 
     [Header("Firebase Auth")]
@@ -34,6 +34,8 @@ public class LoginWithGoogle : MonoBehaviour
     private void Start()
     {
         InitFirebase();
+        LoginPanel.SetActive(true);
+        UserPanel.SetActive(false);
         LoginButton.onClick.AddListener(Login);
         LogoutButton.onClick.AddListener(Logout);
     }
@@ -64,11 +66,11 @@ public class LoginWithGoogle : MonoBehaviour
                 return;
             }
 
-            if (task.IsFaulted)
-            {
-                Debug.LogError("Google sign-in encountered an error: " + task.Exception);
-                return;
-            }
+            // if (task.IsFaulted)
+            // {
+            //     Debug.LogError("Google sign-in encountered an error: " + task.Exception);
+            //     return;
+            // }
 
             GoogleSignInUser googleUser = task.Result;
 
