@@ -26,6 +26,7 @@ public class LoginWithGoogle : MonoBehaviour
     public GameObject UserPanel;
     public TMP_Text Username;
     public TMP_Text UserEmail;
+    public TMP_Text UserID;
     public Image UserProfilePic;
 
     private string imageUrl;
@@ -51,6 +52,7 @@ public class LoginWithGoogle : MonoBehaviour
         {
             GoogleSignIn.Configuration = new GoogleSignInConfiguration
             {
+                RequestAuthCode = true,
                 RequestIdToken = true,
                 WebClientId = GoogleAPI,
                 RequestEmail = true
@@ -66,16 +68,24 @@ public class LoginWithGoogle : MonoBehaviour
                 return;
             }
 
-            // if (task.IsFaulted)
-            // {
-            //     Debug.LogError("Google sign-in encountered an error: " + task.Exception);
-            //     return;
-            // }
+            if (task.IsFaulted)
+            {
+                Debug.LogError("Google sign-in encountered an error: " + task.Exception);
+                return;
+            }
 
             GoogleSignInUser googleUser = task.Result;
+            string authCode = googleUser.AuthCode;
+            if (string.IsNullOrEmpty(authCode))
+            {
+                Debug.LogError("Google Sign-In auth code is null or empty.");
+            }
+            else
+            {
+                Debug.Log("Google Auth Code: " + authCode);
+            }
 
             Credential credential = GoogleAuthProvider.GetCredential(googleUser.IdToken, null);
-
             auth.SignInWithCredentialAsync(credential).ContinueWithOnMainThread(authTask =>
             {
                 if (authTask.IsCanceled)
@@ -91,9 +101,9 @@ public class LoginWithGoogle : MonoBehaviour
                 }
 
                 user = auth.CurrentUser;
-
                 Username.text = user.DisplayName;
                 UserEmail.text = user.Email;
+                UserID.text = user.UserId;
 
                 LoginPanel.SetActive(false);
                 UserPanel.SetActive(true);

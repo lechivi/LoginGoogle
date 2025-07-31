@@ -120,7 +120,8 @@ InitTestScene*.unity*
 #Other
 /[Aa]ssets/GeneratedLocalRepo/
 /[Aa]ssets/TextMesh Pro/
-/[Aa]ssets/Plugins/
+#/[Aa]ssets/Plugins/
+/[Aa]ssets/Plugins/tvOS
 /[Ss]creenshot/
 /[Ii]OS/
 /[Bb]uild_iOS/
